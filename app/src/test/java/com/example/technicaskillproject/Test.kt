@@ -2,28 +2,22 @@ package com.example.technicaskillproject
 
 import android.arch.core.executor.testing.InstantTaskExecutorRule
 import com.example.technicaskillproject.model.Data
-import com.example.technicaskillproject.model.Result
 import com.example.technicaskillproject.viewmodel.MyViewModel
 import io.reactivex.rxjava3.android.plugins.RxAndroidPlugins
-import io.reactivex.rxjava3.core.Observer
 import io.reactivex.rxjava3.core.Scheduler
 import io.reactivex.rxjava3.core.Single
-import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.schedulers.Schedulers
-import org.junit.Test
-
-import org.junit.Assert.*
+import org.junit.Assert
 import org.junit.Before
 import org.junit.Rule
+import org.junit.Test
 import org.mockito.Mockito
+import org.mockito.junit.MockitoJUnit
 import java.util.concurrent.Callable
+import com.example.technicaskillproject.model.Result
+import org.mockito.junit.MockitoRule
 
-/**
- * Example local unit test, which will execute on the development machine (host).
- *
- * See [testing documentation](http://d.android.com/tools/testing).
- */
-class ExampleUnitTest {
+class Test {
     lateinit var some: MyViewModel
 
     @Before
@@ -34,6 +28,9 @@ class ExampleUnitTest {
 
     @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()
+
+    @get:Rule
+    var rule: MockitoRule = MockitoJUnit.rule()
 
     @Test
     fun `Test the getData Function`() {
@@ -64,14 +61,11 @@ class ExampleUnitTest {
         )
 
         val single = Single.just(data)
-
-        Mockito.`when`(some.getData("naruto")).thenReturn(single)
-
         Mockito.`when`(some.passData("naruto")).thenCallRealMethod()
 
         some.passData("naruto").observeForever {
             if (!it.isNullOrEmpty()) {
-                assertEquals(it, list)
+                Assert.assertEquals(it, list)
             }
         }
     }

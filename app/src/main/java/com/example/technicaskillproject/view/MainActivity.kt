@@ -2,7 +2,6 @@ package com.example.technicaskillproject.view
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.*
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.get
@@ -10,8 +9,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.technicaskillproject.R
 import com.example.technicaskillproject.viewmodel.MyViewModel
-import io.reactivex.rxjava3.disposables.CompositeDisposable
-import io.reactivex.rxjava3.schedulers.Schedulers
 
 class MainActivity : AppCompatActivity() {
 
@@ -32,6 +29,7 @@ class MainActivity : AppCompatActivity() {
         init()
     }
 
+    // Function to Get data from the API upon launch of action and handle New API calls.
     private fun init() {
         myViewModel.passData("naruto").observe(this, {
             adapter.newData(it)
@@ -47,12 +45,4 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
-
-
-    override fun onStop() {
-        super.onStop()
-        CompositeDisposable().clear()
-    }
-
-
 }

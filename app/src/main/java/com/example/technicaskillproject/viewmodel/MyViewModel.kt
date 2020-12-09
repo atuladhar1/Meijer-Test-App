@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.technicaskillproject.model.Data
 import com.example.technicaskillproject.model.Result
-import com.example.technicaskillproject.model.repository.ApiCall
+import com.example.technicaskillproject.model.service.ApiCall
 import hu.akarnokd.rxjava3.retrofit.RxJava3CallAdapterFactory
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Single
@@ -14,12 +14,11 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 open class MyViewModel : ViewModel() {
-
+    //Get Data From the API and pass it to the activity as LiveData
     open fun passData(query: String): LiveData<List<com.example.technicaskillproject.model.Result>> {
-
         val liveData = MutableLiveData<List<Result>>()
 
-        getData(query).subscribeOn(Schedulers.io())
+        ApiCall().getDataFromAPI(query).subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
                 if (it != null) {
@@ -31,14 +30,4 @@ open class MyViewModel : ViewModel() {
 
         return liveData
     }
-
-    //    ApiCall
-    open fun getData(query: String): Single<Data> {
-        val a = Retrofit.Builder().baseUrl("https://api.jikan.moe/v3/search/")
-            .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
-            .addConverterFactory(GsonConverterFactory.create())
-            .build().create(ApiCall::class.java)
-        return a.getDataFromAPI(query)
-    }
-
 }

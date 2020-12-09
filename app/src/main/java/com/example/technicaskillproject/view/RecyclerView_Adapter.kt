@@ -14,6 +14,8 @@ import com.squareup.picasso.Picasso
 
 class RecyclerViewAdapter(private val context: Context, private var list: List<Result>) :
     RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>() {
+
+    //    Create rows for the Recycler View with data binding
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(context).inflate(R.layout.recycler_view_row, parent, false)
         val bind = RecyclerViewRowBinding.bind(view)
@@ -21,7 +23,6 @@ class RecyclerViewAdapter(private val context: Context, private var list: List<R
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-
         holder.bindView(list[position])
     }
 
@@ -29,6 +30,7 @@ class RecyclerViewAdapter(private val context: Context, private var list: List<R
         return list.size
     }
 
+    //    Pass data from the Activity that is to be displayed in the Recycler View.
     fun newData(newList: List<Result>) {
         list = newList
         (context as MainActivity).runOnUiThread {
@@ -37,12 +39,15 @@ class RecyclerViewAdapter(private val context: Context, private var list: List<R
     }
 
     inner class ViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
-        fun bindView(result: Result) {
 
+        //        Populate the data using dataBinding and load Image using Picasso
+        fun bindView(result: Result) {
             val bind = DataBindingUtil.getBinding<RecyclerViewRowBinding>(view)
             Picasso.get().load(result.image_url).placeholder(R.drawable.placeholder)
-                .into(bind!!.rowImage)
-            bind!!.result = result
+                .into(bind?.rowImage)
+            bind?.result = result
+
+//            Handle click events to open the details activity when a view is clicked.
             view.setOnClickListener {
                 val intent = Intent(context, DetailsActivity::class.java)
                 intent.putExtra("data", result)
