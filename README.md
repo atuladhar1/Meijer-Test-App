@@ -1,4 +1,4 @@
-# ScreeningApplication
+# MeijerTestApp
 
 ## Introduction
 This project was done following the MVVM Design Patterns.
